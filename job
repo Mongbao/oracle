@@ -41,4 +41,42 @@ select * from dba_jobs_running;
 如果改成TRUNC(sysdate,'mi')+10/(24*60)就是每10分鐘執行次
 
 每天定時執行
-每天
+每天凌晨一點執行      Interval => TRUNC(next_day(sysdate,'星期一'))+1/24
+每月定時執行
+每月一日凌晨一點執行   Interval => TRUNC(LAST_DAY(SYSDATE))+1+1/24
+每季定時執行
+每季第一天凌晨一點執行 Interval => TRUNC(ADD_MONTHS(SYSDATE,3),'Q')+1/24
+每半年定時執行
+每年七月一日和一月一日凌晨一點 Interval => ADD_MONTHS(TRUNC(SYSDATE,'YYYY'),6)+1/24
+每年定時執行
+每年一月一日凌晨一點執行  Interval => ADD_MONTHS(TRUNC(SYSDATE,'YYYY'),12)+1/24
+
+建立job基本語法
+DECLARE
+  variable job number;
+BEGIN
+  sys.dbms_job.submit(job => :job,
+  what => 'prc_name;',                --執行的儲存過程名字
+  next_date => to_date('22-11-201309:08:41','dd-mm-yyyy hh24:mi:ss'),
+  interval => 'sysdate+1/86400');     --每天86400秒，即一秒鐘執行prc_name過程一次
+  commit;
+end;
+使用dbms_job.submit方法過程，有五個引數：job,what,next_date,interval,noparse
+
+dbms_job.submit(job           OUT binary_integer,
+                what          IN varchar2,
+                next_date     IN date,
+                interval      IN varchar2,
+                no_parse      IN booean := FALSE)
+job引數是輸出引數，由submit()過程返回binary_integer，這個值用來唯一標示一個工作。
+一般定義一個變數接收，可以去user_jobs檢視查詢job值
+what引數是將被執行的PL/SQL程式碼塊，儲存過程名稱等
+next_date引數指示何時將執行這個工作
+interval引數何時這個工作將被重新執行
+no_parse引數指示此工作在提交時或執行時是否應進行語法分析-true，預設值false。
+指示此PL/SQL程式碼在它第一次執行時應進行語法分析，而FALSE指示本PL/SQL程式碼應立即進行語法分析
+
+其他job相關的儲存過程
+在dbms_job這個package中還有其他的過程：broken,change,interval,isubmit,next_date,remove,run,submit,user_export,what;
+
+https://www.796t.com/content/1541780593.html
