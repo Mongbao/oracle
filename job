@@ -27,4 +27,13 @@ MISC_ENV    RAW(32)         任務執行的其他一些會話引數
 
 --正在執行job
 select * from dba_jobs_running;
---其中最重要的欄位就是job這個值就是操作
+--其中最重要的欄位就是job這個值就是操作job的id號，what操作儲存過程的名稱，next_date執行的時間，interval執行間隔
+
+執行間隔interval執行頻率
+描述                INTERVAL引數值
+每天午夜12點         TRUNC(SYSDATE+1)
+每天早上8點30分      TRUNC(SYSDATE+1) + (8*60+30) /(24*60)
+每星期二中午12點      NEXT_DAY(TRUNC(SYSDATE),"TURESDAY")+12/24
+每個月第一天的午夜12點  TRUNC(LAST_DAY(SYSDATE)+1)
+每個季度最後一天晚上11點 TRUNC(ADD_MONTHS(SYSDATE+2/24,3),'Q')-1/24
+每星期六和日
