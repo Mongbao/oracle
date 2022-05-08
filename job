@@ -36,4 +36,9 @@ select * from dba_jobs_running;
 每星期二中午12點      NEXT_DAY(TRUNC(SYSDATE),"TURESDAY")+12/24
 每個月第一天的午夜12點  TRUNC(LAST_DAY(SYSDATE)+1)
 每個季度最後一天晚上11點 TRUNC(ADD_MONTHS(SYSDATE+2/24,3),'Q')-1/24
-每星期六和日
+每星期六和日早上6點10分   TRUNC(LEAST(NEXT_DAY(SYSDATE,"SATURDAY"),NEXT_DAY(SYSDATE,"SUNDAY")))+(6*60+10) / (24*60)
+每秒鐘執行次          INTERVAL => sysdate+1/(24*60*60)
+如果改成TRUNC(sysdate,'mi')+10/(24*60)就是每10分鐘執行次
+
+每天定時執行
+每天
