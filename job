@@ -1,0 +1,30 @@
+--相關檢視
+select * from dba_jobs;
+select * from all_jobs;
+select * from user_jobs;
+
+--查詢欄位描述
+欄位         型別             描述
+JOB         NUMBER          任務的唯一標示號
+LOG_USER    VARCHAR2(30)    提交任務使用者
+PRIV_USER   VARCHAR2(30)    賦予任務許可權的使用者
+SCHEMA_USER VARCHAR2(30)    對任務作語法分析的使用者模式
+LAST_DATE   DATE            最後一次成功執行任務時間
+LAST_SEC    VARCHAR2(8)     如HH24:MM:SS格式的last_date日期的小時分鐘和秒
+THIS_DATE   DATE            正在執行任務的開始時間，如果沒有執行任務則為null
+THIS_SEC    VARCHAR2(8)     如HH24:MM:SS格式的this_date日期的小時分鐘和秒
+NEXT_DATE   DATE            下一次定時執行任務的時間
+NEXT_SEC    VARCHAR2(8)     如HH24:MM:SS格式的next_date日期的小時分鐘和秒
+TOTAL_TIME  NUMBER          該任務執行所需要的總時間，單位為秒
+BROKEN      VARCHAR2(200)   用於計算下一執行時間的表示式
+FAILURES    NUMBER          任務執行連續沒有成功的次數
+WHAT        VARCHAR2(2000)  執行任務的PL/SQL塊
+CURRENT_SESSION_LABELRAW  VARCHAR2(2000)  任務執行的NLS會話設定
+CLEARANCE_HI  RAL MLSLABEL  該任務可信任的Oracle最大間隙
+CLEARANCE_LO  RAW           MLSLABEL該任務可信任的Oracle最小間隙
+NLS_ENV     VARCHAR2(2000)  任務執行的NLS會話設定
+MISC_ENV    RAW(32)         任務執行的其他一些會話引數
+
+--正在執行job
+select * from dba_jobs_running;
+--其中最重要的欄位就是job這個值就是操作
