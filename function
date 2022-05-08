@@ -1,0 +1,13 @@
+CREATE OR REPLACE FUNCTION my_function RETURN NUMBER IS
+BEGIN
+  DBMS_OUTPUT.PUT_LINE('hello world');
+  RETURN;
+END my_function;
+
+執行function
+DECLARE
+  result NUMBER;
+BEGIN
+  result := my_function();
+  DBMS_OUTPUT.PUT_LINE(result);
+END;
