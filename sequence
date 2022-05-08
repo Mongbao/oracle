@@ -1,0 +1,38 @@
+--建立Sequence語法
+CREATE sequence <schema>.<table_name>_s
+increment by 1
+start with 1
+maxvalue 9999999999999999
+minvalue 1
+nocycle;
+
+--incerment:每次增加的次數
+--start:Sequence開始數值
+--maxvalue:Sequence最大值
+--nocycle:當Sequence達最大值時，不重頭開始
+
+--取得下一筆Sequence值
+select <Sequence_name>.nextval[@db_link]
+  from dual;
+
+--查詢目前Sequence值
+--語法1:
+select <Sequence_name>.currval[@db_link]
+  from dual;
+  
+--若"目前所在的DB Session"尚未執行 nextval,就先執行currval,
+--則會得到ORA-08002:sequence DB_SESSION_ID.CURRVAL is not defined in this session錯誤
+--語法2:
+select last_number -1
+  from all_sequences
+  where sequence_name = '<Sequence_name>';
+
+--修改Sequence
+如：Alter Sequence <Sequence_name> MaxValue 999999999999999;
+
+--注意事項
+--Sequence 不能直接用在“等式 :="之後
+--如 vID := tomSeq.nextval;
+
+--Sequence 可以直接用在"SQL"之中
+--如 insert into tomTable value( tomSeq.nextval,...);
